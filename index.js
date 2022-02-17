@@ -31,7 +31,8 @@ const opts = {
 };
 
 let guesses = {};
-    word = [];
+    word = [],
+    facts = [];
 
 https.get(wordleFile, res => {
     let wordleData = '';
@@ -56,8 +57,30 @@ https.get(wordleFile, res => {
                     }
                 });
             });
+
+            Object.values(guesses).forEach(guessData => {
+                let guess = [...guessData.guess],
+                    answer = [...guessData.answer];
+
+                word.forEach((c, i) => {
+                    delete guess[i];
+
+                    if (answer.indexOf(c) > -1) {
+                        answer.splice(answer.indexOf(c), 1);
+                    }
+                });
+
+                const yellows = guess.filter(c => c === '🟨').length;
+                if (yellows) {
+                    facts.push({
+                        letters: yellows,
+                        from: [... new Set(answer.filter(Boolean))],
+                    });
+                }
+            });
             console.log(guesses);
             console.log(word);
+            console.log(facts);
             console.log(popular.filter(matchesGuess(word)));
         });
     });
