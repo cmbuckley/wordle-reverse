@@ -75,6 +75,7 @@ https.get(wordleFile, res => {
                     facts.push({
                         letters: yellows,
                         from: [... new Set(answer.filter(Boolean))],
+                        guess: guess,
                     });
                 }
             });
@@ -89,7 +90,12 @@ https.get(wordleFile, res => {
                 word.forEach((c, i) => delete choice[i]);
                 return facts.every(fact => {
                     const intersection = fact.from.filter(c => choice.includes(c));
-                    return intersection.length >= fact.letters;
+                    if (intersection.length < fact.letters) { return false; }
+
+                    return fact.guess.every((c, i) => {
+                        if (c != '🟨') { return true; }
+                        return fact.from.includes(choice[i]);
+                    });
                 });
             });
 
