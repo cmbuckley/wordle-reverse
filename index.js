@@ -78,10 +78,21 @@ https.get(wordleFile, res => {
                     });
                 }
             });
+
+            let choices = popular.filter(matchesGuess(word)).filter(choice => {
+                choice = [...choice];
+
+                word.forEach((c, i) => delete choice[i]);
+                return facts.every(fact => {
+                    const intersection = fact.from.filter(c => choice.includes(c));
+                    return intersection.length >= fact.letters;
+                });
+            });
+
             console.log(guesses);
             console.log(word);
             console.log(facts);
-            console.log(popular.filter(matchesGuess(word)));
+            console.log(choices);
         });
     });
 });
