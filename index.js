@@ -69,7 +69,7 @@ https.get(wordleFile, res => {
                     answer = [...guessData.answer];
 
                 word.forEach((c, i) => {
-                    delete guess[i];
+                    guess[i] = '';
 
                     if (answer.indexOf(c) > -1) {
                         answer.splice(answer.indexOf(c), 1);
