@@ -1,10 +1,20 @@
 require('dotenv').config();
 
+const fs = require('fs');
 const https = require('https');
 const fetch = require('fetch-timeline');
 
 const wordleFile = 'https://www.nytimes.com/games/wordle/main.18740dce.js',
     wordleVar = 'Ma';
+
+// https://github.com/dwyl/english-words/raw/master/words_alpha.txt
+const popular = fs.readFileSync('./words_alpha.txt', 'utf8').split('\r\n').filter(w => w.length == 5);
+
+function matchesGuess(guess) {
+    return function (word) {
+        return guess.every((c, i) => c == word[i]);
+    };
+}
 
 const params = {
     screenName: 'cmbuckleywordle',
@@ -48,6 +58,7 @@ https.get(wordleFile, res => {
             });
             console.log(guesses);
             console.log(word);
+            console.log(popular.filter(matchesGuess(word)));
         });
     });
 });
