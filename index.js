@@ -27,7 +27,7 @@ const opts = {
         accessToken:       process.env.TWITTER_ACCESS_TOKEN,
         accessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
     },
-    limit: 10,
+    limit: process.argv[2] || 10,
 };
 
 let guesses = {};
