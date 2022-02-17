@@ -21,6 +21,7 @@ const opts = {
 };
 
 let guesses = {};
+    word = [];
 
 https.get(wordleFile, res => {
     let wordleData = '';
@@ -38,7 +39,15 @@ https.get(wordleFile, res => {
                 answer: answers[number],
             };
         }).on('info', () => {
+            Object.values(guesses).forEach(guessData => {
+                [...guessData.guess].forEach((result, index) => {
+                    if (result == '🟩') {
+                        word[index] = guessData.answer[index];
+                    }
+                });
+            });
             console.log(guesses);
+            console.log(word);
         });
     });
 });
