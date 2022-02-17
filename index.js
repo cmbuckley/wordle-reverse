@@ -80,7 +80,7 @@ https.get(wordleFile, res => {
                 }
             });
 
-            if (word.length == 5) {
+            if (word.filter(Boolean).length == 5) {
                 return console.log('Found guess:', word.join('').toUpperCase());
             }
 
@@ -103,6 +103,10 @@ https.get(wordleFile, res => {
             console.log(word);
             console.log(facts);
             console.log(choices);
+
+            if (choices.length == 1) {
+                console.log('Found guess:', choices[0].toUpperCase());
+            }
         });
     });
 });
