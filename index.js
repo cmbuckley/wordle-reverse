@@ -20,7 +20,7 @@ const opts = {
     limit: 10,
 };
 
-let tweets = [];
+let guesses = {};
 
 https.get(wordleFile, res => {
     let wordleData = '';
@@ -29,8 +29,16 @@ https.get(wordleFile, res => {
         const matches = wordleData.match(new RegExp(`var ${wordleVar}=(\\[[^\\]]+\\])`)),
             answers = JSON.parse(matches[1]);
 
-        fetch(params, opts).on('data', ({text}) => tweets.push(text)).on('info', () => {
-            console.log(tweets);
+        fetch(params, opts).on('data', ({text}) => {
+            const textData = text.split('\n'),
+                number = textData[0].split(' ')[1];
+
+            guesses[number] = {
+                guess: textData[2],
+                answer: answers[number],
+            };
+        }).on('info', () => {
+            console.log(guesses);
         });
     });
 });
