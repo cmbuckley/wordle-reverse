@@ -79,6 +79,10 @@ https.get(wordleFile, res => {
                 }
             });
 
+            if (word.length == 5) {
+                return console.log('Found guess:', word.join('').toUpperCase());
+            }
+
             let choices = popular.filter(matchesGuess(word)).filter(choice => {
                 choice = [...choice];
 
