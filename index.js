@@ -113,9 +113,12 @@ https.get(wordleFile, res => {
                 });
             });
 
+            console.log('Guesses:');
             console.log(guesses);
-            console.log(word);
+            console.log('Word:', new Array(5).fill('').map((c, i) => (word[i] || '_').toUpperCase()).join(''));
+            console.log('Facts:');
             console.log(facts);
+            console.log('Choices:');
             console.log(choices);
 
             if (choices.length == 1) {
