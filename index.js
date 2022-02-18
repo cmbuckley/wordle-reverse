@@ -63,6 +63,11 @@ https.get(wordleFile, res => {
                 });
             });
 
+            // maybe we got it already?
+            if (word.filter(Boolean).length == 5) {
+                return console.log('Found guess:', word.join('').toUpperCase());
+            }
+
             // now parse the yellows and get facts about what other letters are in the guess
             Object.values(guesses).forEach(guessData => {
                 let guess = [...guessData.guess],
@@ -86,11 +91,6 @@ https.get(wordleFile, res => {
                     });
                 }
             });
-
-            // maybe we got it already?
-            if (word.filter(Boolean).length == 5) {
-                return console.log('Found guess:', word.join('').toUpperCase());
-            }
 
             // filter the choices according to the facts
             let choices = popular.filter(matchesGuess(word)).filter(choice => {
