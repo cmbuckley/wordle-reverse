@@ -31,6 +31,9 @@ const opts = {
     limit: process.argv[2] || 10,
 };
 
+const greens = ['🟩', '🟧'],
+    yellows = ['🟨', '🟦'];
+
 let guesses = {};
     word = [],
     facts = [];
@@ -57,7 +60,7 @@ https.get(wordleFile, res => {
             // loop through tweets and find all the greens for all known letters
             Object.values(guesses).forEach(guessData => {
                 [...guessData.guess].forEach((result, index) => {
-                    if (result == '🟩') {
+                    if (greens.includes(result)) {
                         word[index] = guessData.answer[index];
                     }
                 });
@@ -82,12 +85,12 @@ https.get(wordleFile, res => {
                 });
 
                 // if we have yellows in the guess, we have a pool of letters (and how many should be from that pool)
-                const yellows = guess.filter(c => c === '🟨').length;
-                if (yellows) {
+                const letters = guess.filter(c => yellows.includes(c)).length;
+                if (letters) {
                     facts.push({
-                        letters: yellows,
+                        letters,
                         from: [... new Set(answer.filter(Boolean))],
-                        guess: guess,
+                        guess,
                     });
                 }
             });
@@ -104,7 +107,7 @@ https.get(wordleFile, res => {
 
                     // now check the word would actually fit the yellows
                     return fact.guess.every((c, i) => {
-                        if (c != '🟨') { return true; }
+                        if (!yellows.includes(c)) { return true; }
                         return fact.from.includes(choice[i]);
                     });
                 });
