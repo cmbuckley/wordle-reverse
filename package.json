@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "dotenv": "^16.0.0",
+    "dotenv": "^17.0.0",
     "fetch-timeline": "github:kikobeats/fetch-timeline#master"
   }
 }
